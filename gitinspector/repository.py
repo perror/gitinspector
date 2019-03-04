@@ -25,6 +25,38 @@ import tempfile
 
 from urllib.parse import urlparse
 from .messages import error, warning, debug
+from .utils import run_cmd
+
+class GitCloneFailed(Exception):
+    def __init__(self, msg):
+        super(GitCloneFailed, self).__init__(msg)
+        self.msg = msg
+
+
+class new_Repository():
+    """A Repository holds the content of """
+
+    def __init__(self, path):
+        # Detect if 'path' is either a fs path or an url
+        from urllib.parse import urlparse
+        parsed_url = urlparse(path)
+
+        # If the repo needs to get cloned from remote
+        if parsed_url.scheme == "git" or parsed_url.scheme == "ssh" or \
+           parsed_url.scheme == "http" or parsed_url.scheme == "https":
+            from tempfile import TemporaryDirectory
+            clone_path = TemporaryDirectory().name
+            clone_cmd = ['git', 'clone', path, clone_path]
+            retcode, stdout, stderr = run_cmd(clone_cmd)
+            if retcode != 0:
+                GitCloneFailed("command 'git clone %s %s' failed!\n" \
+                               % (path, clone_path))
+            self.path = clone_path
+        else:
+            # Default if scheme is None of 'file'
+            self.path = parsed_url.path
+
+
 
 class Repository(object):
     cloned_paths = []  # List of paths of temporary repositories
