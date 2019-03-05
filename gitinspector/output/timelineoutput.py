@@ -40,8 +40,8 @@ class TimelineOutput(Outputable):
 
     def output_text(self):
         if self.changes.get_commits():
-            self.out.writeln("\n" + textwrap.fill(TIMELINE_INFO_TEXT() +
-                                                  ":", width=terminal.get_size()[0]))
+            self.out.write("\n" + textwrap.fill(TIMELINE_INFO_TEXT() +
+                                                ":", width=terminal.get_size()[0]) + "\n")
 
             timeline_data = timeline.TimelineData(self.changes, self.useweeks)
             periods = timeline_data.get_periods()
@@ -148,8 +148,8 @@ class TimelineOutput(Outputable):
                             str(timeline_data.get_total_changes_in_period(period)[2]) + "</modified_rows>\n"
                 timeline_xml += "\t\t\t<period>\n" + name_xml + authors_xml + modified_rows_xml + "\t\t\t</period>\n"
 
-            self.out.writeln("\t<timeline>\n" + message_xml + periods_xml + timeline_xml +
-                             "\t\t</periods>\n\t</timeline>")
+            self.out.write("\t<timeline>\n" + message_xml + periods_xml + timeline_xml +
+                           "\t\t</periods>\n\t</timeline>\n")
 
     def __output_row__text__(self, timeline_data, periods, names):
         self.out.write("\n" + terminal.__bold__ + terminal.ljust(_("Author"), 20) + " ")
@@ -157,7 +157,7 @@ class TimelineOutput(Outputable):
         for period in periods:
             self.out.write(terminal.rjust(period, 10) + " ")
 
-        self.out.writeln(terminal.__normal__)
+        self.out.write(terminal.__normal__ + "\n")
 
         for name in names:
             if timeline_data.is_author_in_periods(periods, name[0]):
@@ -169,7 +169,7 @@ class TimelineOutput(Outputable):
                     signs_str = (signs[1] * "-" + signs[0] * "+")
                     self.out.write(("." if (timeline_data.is_author_in_period(period, name[0]) and \
                                             not signs_str) else signs_str).rjust(11))
-                self.out.writeln("")
+                self.out.write("\n")
 
         terminal.writeb(self.out, terminal.ljust(MODIFIED_ROWS_TEXT(), 20))
 
@@ -181,7 +181,7 @@ class TimelineOutput(Outputable):
 
             self.out.write(terminal.rjust(total_changes, 11))
 
-        self.out.writeln("")
+        self.out.write("\n")
 
     def __output_row__html__(self, timeline_data, periods, names):
         timeline_xml = "<table class=\"git full\"><thead><tr><th>" + _("Author") + "</th>"

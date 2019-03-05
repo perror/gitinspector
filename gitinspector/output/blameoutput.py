@@ -102,7 +102,7 @@ class BlameOutput(Outputable):
         if self.progress and sys.stdout.isatty() and formats.is_interactive_format():
             terminal.clear_row()
 
-        self.out.writeln(textwrap.fill(BLAME_INFO_TEXT() + ":", width=terminal.get_size()[0]) + "\n")
+        self.out.write(textwrap.fill(BLAME_INFO_TEXT() + ":", width=terminal.get_size()[0]) + "\n")
         terminal.writeb(self.out,
                         terminal.ljust(_("Author"), 21) + terminal.rjust(_("Rows"), 10) +
                         terminal.rjust(_("Stability"), 15) +
@@ -114,7 +114,8 @@ class BlameOutput(Outputable):
             self.out.write(str(i[1].rows).rjust(11))
             self.out.write("{0:.1f}".format(Blame.get_stability(i[0], i[1].rows, self.changes)).rjust(15))
             self.out.write("{0:.1f}".format(float(i[1].skew) / i[1].rows).rjust(13))
-            self.out.writeln("{0:.2f}".format(100.0 * i[1].comments / i[1].rows).rjust(20))
+            self.out.write("{0:.2f}".format(100.0 * i[1].comments / i[1].rows).rjust(20))
+            self.out.write("\n")
 
     def output_xml(self):
         message_xml = "\t\t<message>" + BLAME_INFO_TEXT() + "</message>\n"
@@ -135,5 +136,5 @@ class BlameOutput(Outputable):
             blame_xml += ("\t\t\t<author>\n" + name_xml + email_xml + gravatar_xml + rows_xml + stability_xml +
                           age_xml + percentage_in_comments_xml + "\t\t\t</author>\n")
 
-        self.out.writeln("\t<blame>\n" + message_xml + "\t\t<authors>\n" +
-                         blame_xml + "\t\t</authors>\n\t</blame>")
+        self.out.write("\t<blame>\n" + message_xml + "\t\t<authors>\n" +
+                       blame_xml + "\t\t</authors>\n\t</blame>\n")

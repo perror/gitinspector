@@ -41,8 +41,8 @@ class ResponsibilitiesOutput(Outputable):
         self.out = runner.out
 
     def output_text(self):
-        self.out.writeln("\n" + textwrap.fill(RESPONSIBILITIES_INFO_TEXT() + ":",
-                                              width=terminal.get_size()[0]))
+        self.out.write("\n" + textwrap.fill(RESPONSIBILITIES_INFO_TEXT() + ":",
+                                            width=terminal.get_size()[0]) + "\n")
 
         for committer in self.blame.committers_by_responsibilities():
             responsibilities = sorted(((resp[1], resp[0])
@@ -50,14 +50,15 @@ class ResponsibilitiesOutput(Outputable):
                                       reverse=True)
 
             if responsibilities:
-                self.out.writeln("\n" + committer[0] + " " + MOSTLY_RESPONSIBLE_FOR_TEXT() + ":")
+                self.out.write("\n" + committer[0] + " " + MOSTLY_RESPONSIBLE_FOR_TEXT() + ":\n")
 
                 for j, entry in enumerate(responsibilities):
                     (width, _unused) = terminal.get_size()
                     width -= 7
 
                     self.out.write(str(entry[0]).rjust(6) + " ")
-                    self.out.writeln("...%s" % entry[1][-width+3:] if len(entry[1]) > width else entry[1])
+                    self.out.write("...%s" % entry[1][-width+3:] if len(entry[1]) > width else entry[1])
+                    self.out.write("\n")
 
                     if j >= 9:
                         break
@@ -157,5 +158,5 @@ class ResponsibilitiesOutput(Outputable):
                 resp_xml += "\t\t\t\t</files>\n"
                 resp_xml += "\t\t\t</author>\n"
 
-        self.out.writeln("\t<responsibilities>\n" + message_xml + "\t\t<authors>\n" + resp_xml +
-                         "\t\t</authors>\n\t</responsibilities>")
+        self.out.write("\t<responsibilities>\n" + message_xml + "\t\t<authors>\n" + resp_xml +
+                       "\t\t</authors>\n\t</responsibilities>\n")

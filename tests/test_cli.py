@@ -23,7 +23,7 @@ import tempfile
 import unittest
 import zipfile
 
-from gitinspector.gitinspector import Runner, FileWriter, filtering, interval, __parse_arguments__
+from gitinspector.gitinspector import Runner, filtering, interval, __parse_arguments__
 
 
 class CommandLineOptionsTest(unittest.TestCase):

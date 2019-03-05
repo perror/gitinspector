@@ -52,22 +52,25 @@ class MetricsOutput(Outputable):
     def output_text(self):
         if not self.metrics.eloc and not self.metrics.cyclomatic_complexity and \
            not self.metrics.cyclomatic_complexity_density:
-            self.out.writeln("\n" + METRICS_MISSING_INFO_TEXT() + ".")
+            self.out.write("\n" + METRICS_MISSING_INFO_TEXT() + ".\n")
 
         if self.metrics.eloc:
-            self.out.writeln("\n" + ELOC_INFO_TEXT() + ":")
+            self.out.write("\n" + ELOC_INFO_TEXT() + ":\n")
             for i in sorted(set([(j, i) for (i, j) in self.metrics.eloc.items()]), reverse=True):
-                self.out.writeln(_("{0} ({1} estimated lines of code)").format(i[1], str(i[0])))
+                self.out.write(_("{0} ({1} estimated lines of code)").format(i[1], str(i[0])))
+                self.out.write("\n")
 
         if self.metrics.cyclomatic_complexity:
-            self.out.writeln("\n" + CYCLOMATIC_COMPLEXITY_TEXT() + ":")
+            self.out.write("\n" + CYCLOMATIC_COMPLEXITY_TEXT() + ":\n")
             for i in sorted(set([(j, i) for (i, j) in self.metrics.cyclomatic_complexity.items()]), reverse=True):
-                self.out.writeln(_("{0} ({1} in cyclomatic complexity)").format(i[1], str(i[0])))
+                self.out.write(_("{0} ({1} in cyclomatic complexity)").format(i[1], str(i[0])))
+                self.out.write("\n")
 
         if self.metrics.cyclomatic_complexity_density:
-            self.out.writeln("\n" + CYCLOMATIC_COMPLEXITY_DENSITY_TEXT() + ":")
+            self.out.write("\n" + CYCLOMATIC_COMPLEXITY_DENSITY_TEXT() + ":\n")
             for i in sorted(set([(j, i) for (i, j) in self.metrics.cyclomatic_complexity_density.items()]), reverse=True):
-                self.out.writeln(_("{0} ({1:.3f} in cyclomatic complexity density)").format(i[1], i[0]))
+                self.out.write(_("{0} ({1:.3f} in cyclomatic complexity density)").format(i[1], i[0]))
+                self.out.write("\n")
 
     def output_html(self):
         if not self.metrics.eloc and not self.metrics.cyclomatic_complexity and \
@@ -161,8 +164,8 @@ class MetricsOutput(Outputable):
 
     def output_xml(self):
         if not self.metrics.eloc and not self.metrics.cyclomatic_complexity and not self.metrics.cyclomatic_complexity_density:
-            self.out.writeln("\t<metrics>\n\t\t<message>" + METRICS_MISSING_INFO_TEXT() +
-                             "</message>\n\t</metrics>")
+            self.out.write("\t<metrics>\n\t\t<message>" + METRICS_MISSING_INFO_TEXT() +
+                           "</message>\n\t</metrics>\n")
         else:
             eloc_xml = ""
 
@@ -187,4 +190,4 @@ class MetricsOutput(Outputable):
                     eloc_xml += "\t\t\t\t<value>{0:.3f}</value>\n".format(i[0])
                     eloc_xml += "\t\t\t</cyclomatic-complexity-density>\n"
 
-            self.out.writeln("\t<metrics>\n\t\t<violations>\n" + eloc_xml + "\t\t</violations>\n\t</metrics>")
+            self.out.write("\t<metrics>\n\t\t<violations>\n" + eloc_xml + "\t\t</violations>\n\t</metrics>\n")

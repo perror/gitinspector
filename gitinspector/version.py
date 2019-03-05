@@ -18,6 +18,13 @@
 # You should have received a copy of the GNU General Public License
 # along with gitinspector. If not, see <http://www.gnu.org/licenses/>.
 
+"""
+This module encapsulate all what is related to version number and
+how to display the version message to the user.
+"""
+
+import sys
+
 from . import localization
 localization.init()
 
@@ -30,5 +37,7 @@ This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
 """)
 
-def output():
-    print("gitinspector {0}\n".format(__version__) + __doc__)
+def display():
+    """Display version message to the user."""
+    sys.stdout.write("gitinspector {0}\n".format(__version__) + __doc__)
+    sys.exit(0)

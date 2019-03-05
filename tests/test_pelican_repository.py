@@ -24,7 +24,7 @@ import unittest
 import zipfile
 
 import gitinspector.localization as localization
-from gitinspector.gitinspector import Runner, FileWriter, filtering, interval, __parse_arguments__
+from gitinspector.gitinspector import Runner, filtering, interval, __parse_arguments__
 
 
 class PelicanRepositoryTest(unittest.TestCase):
@@ -72,8 +72,10 @@ class PelicanRepositoryTest(unittest.TestCase):
         # Launch runner
         localization.init_null()
         file = tempfile.NamedTemporaryFile('w', delete=False)
-        r = Runner(opts, FileWriter(file))
-        r.process()
+        with open(file.name, 'w') as f:
+            r = Runner(opts, f)
+            r.process()
+
         with open(file.name, 'r') as f:
             contents = f.read()
             self.assertTrue("Statistical information" in contents)
@@ -93,8 +95,10 @@ class PelicanRepositoryTest(unittest.TestCase):
         # Launch runner
         localization.init_null()
         file = tempfile.NamedTemporaryFile('w', delete=False)
-        r = Runner(opts, FileWriter(file))
-        r.process()
+        with open(file.name, 'w') as f:
+            r = Runner(opts, f)
+            r.process()
+
         with open(file.name, 'r') as f:
             contents = f.read()
             self.assertTrue("Statistical information" in contents)
@@ -112,8 +116,10 @@ class PelicanRepositoryTest(unittest.TestCase):
         # Launch runner
         localization.init_null()
         file = tempfile.NamedTemporaryFile('w', delete=False)
-        r = Runner(opts, FileWriter(file))
-        r.process()
+        with open(file.name, 'w') as f:
+            r = Runner(opts, f)
+            r.process()
+
         with open(file.name, 'r') as f:
             contents = f.read()
             self.assertTrue("Statistical information" in contents)
@@ -131,8 +137,10 @@ class PelicanRepositoryTest(unittest.TestCase):
         # Launch runner
         localization.init_null()
         file = tempfile.NamedTemporaryFile('w', delete=False)
-        r = Runner(opts, FileWriter(file))
-        r.process()
+        with open(file.name, 'w') as f:
+            r = Runner(opts, f)
+            r.process()
+
         with open(file.name, 'r') as f:
             contents = f.read()
             self.assertTrue("The following historical commit" in contents)
@@ -151,8 +159,10 @@ class PelicanRepositoryTest(unittest.TestCase):
         # Launch runner
         localization.init_null()
         file = tempfile.NamedTemporaryFile('w', delete=False)
-        r = Runner(opts, FileWriter(file))
-        r.process()
+        with open(file.name, 'w') as f:
+            r = Runner(opts, f)
+            r.process()
+
         with open(file.name, 'r') as f:
             contents = f.read()
             self.assertTrue("The following historical commit" in contents)

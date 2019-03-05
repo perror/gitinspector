@@ -57,28 +57,6 @@ DEFAULT_EXTENSIONS = \
      "*akefile", "README", "INSTALL",
     ]
 
-
-class StdoutWriter(io.StringIO):
-    def __init__(self):
-        io.StringIO.__init__(self)
-    def writeln(self, string):
-        self.write(string + "\n")
-    def close(self):
-        print(self.getvalue())
-        io.StringIO.close(self)
-
-
-class FileWriter():
-    def __init__(self, file):
-        self.file = file
-    def write(self, string):
-        self.file.write(string)
-    def writeln(self, string):
-        self.file.write(string + "\n")
-    def close(self):
-        self.file.close()
-
-
 class Runner():
     def __init__(self, config, writer):
         self.config = config  # Namespace object containing the config
@@ -192,6 +170,9 @@ def __get_validated_git_repos__(config):
 
 
 def __parse_arguments__(args=None):
+    """
+    Returns a list of options parsed from the command line arguments.
+    """
     parser = \
         argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
                                 allow_abbrev=False,
@@ -208,8 +189,7 @@ def __parse_arguments__(args=None):
     parser.add_argument('repositories', metavar='REPOSITORY', type=str, nargs='*',
                         help=_('the address of a repository to be analyzed'))
     parser.add_argument('-a', '--aliases', metavar='ALIASES',
-                        help=
-                        _("a dictionary string indicating aliases for the authors"),
+                        help=_("a dictionary string indicating aliases for the authors"),
                         default={})
     parser.add_argument('-b', '--branch', metavar='BRANCH', help=
                         _("the name of the branch for git to checkout, the default "
@@ -292,21 +272,25 @@ def __parse_arguments__(args=None):
 
 
 def main():
+    """
+    Start the program and run the various analysis.
+    """
+    # Checking at start
     __check_python_version__()
     terminal.check_terminal_encoding()
     terminal.set_stdin_encoding()
 
+    # Parse arguments and get the options
     try:
         options = __parse_arguments__()
 
         if options.version:
-            version.output()
-            sys.exit(0)
+            version.display()
 
         if options.output is None:
-            writer = StdoutWriter()
+            writer = sys.stdout
         else:
-            writer = FileWriter(open(options.output, "w+"))
+            writer = open(options.output, "w+")
 
         run = Runner(options, writer)
         run.process()

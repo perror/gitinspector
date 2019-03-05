@@ -106,7 +106,7 @@ class ChangesOutput(Outputable):
 
             self.out.write("\t\t\"changes\": {\n" + message_json + "\t\t\t\"authors\": [\n\t\t\t" + changes_json + "]\n\t\t}")
         else:
-            self.out.writeln("\t\t\"exception\": \"" + NO_COMMITED_FILES_TEXT() + "\"")
+            self.out.write("\t\t\"exception\": \"" + NO_COMMITED_FILES_TEXT() + "\"\n")
 
     def output_text(self):
         authorinfo_list = self.changes.get_authorinfo_list()
@@ -117,8 +117,8 @@ class ChangesOutput(Outputable):
             total_changes += authorinfo_list.get(i).deletions
 
         if authorinfo_list:
-            self.out.writeln(textwrap.fill(HISTORICAL_INFO_TEXT() + ":", width=terminal.get_size()[0]))
-            self.out.writeln("")
+            self.out.write(textwrap.fill(HISTORICAL_INFO_TEXT() + ":", width=terminal.get_size()[0]) + "\n")
+            self.out.write("\n")
             terminal.writeb(self.out,
                             terminal.ljust(_("Author"), 21) + terminal.rjust(_("Commits"), 13) +
                             terminal.rjust(_("Insertions"), 14) + terminal.rjust(_("Deletions"), 15) +
@@ -133,10 +133,10 @@ class ChangesOutput(Outputable):
                 self.out.write(str(authorinfo.commits).rjust(14))
                 self.out.write(str(authorinfo.insertions).rjust(14))
                 self.out.write(str(authorinfo.deletions).rjust(15))
-                self.out.writeln("{0:.2f}".format(percentage).rjust(16))
+                self.out.write("{0:.2f}".format(percentage).rjust(16) + "\n")
         else:
-            self.out.writeln(NO_COMMITED_FILES_TEXT() + ".")
-        self.out.writeln("")
+            self.out.write(NO_COMMITED_FILES_TEXT() + ".")
+        self.out.write("\n\n")
 
     def output_xml(self):
         authorinfo_list = self.changes.get_authorinfo_list()
@@ -166,8 +166,8 @@ class ChangesOutput(Outputable):
                                "</percentage-of-changes>\n"
                 changes_xml += "\t\t\t</author>\n"
 
-            self.out.writeln("\t<changes>\n" + message_xml + "\t\t<authors>\n" +
-                             changes_xml + "\t\t</authors>\n\t</changes>")
+            self.out.write("\t<changes>\n" + message_xml + "\t\t<authors>\n" +
+                             changes_xml + "\t\t</authors>\n\t</changes>\n")
         else:
-            self.out.writeln("\t<changes>\n\t\t<exception>" + NO_COMMITED_FILES_TEXT() +
-                             "</exception>\n\t</changes>")
+            self.out.write("\t<changes>\n\t\t<exception>" + NO_COMMITED_FILES_TEXT() +
+                             "</exception>\n\t</changes>\n")

@@ -103,11 +103,12 @@ class FilteringOutput(Outputable):
 
     def __output_text_section__(self, info_string, filtered):
         if filtered:
-            self.out.writeln("\n" + textwrap.fill(info_string + ":", width=terminal.get_size()[0]))
+            self.out.write("\n" + textwrap.fill(info_string + ":", width=terminal.get_size()[0]) + "\n")
 
             for i in filtered:
                 (width, _unused) = terminal.get_size()
-                self.out.writeln("...%s" % i[-width+3:] if len(i) > width else i)
+                self.out.write("...%s" % i[-width+3:] if len(i) > width else i)
+                self.out.write("\n")
 
     def output_text(self):
         self.__output_text_section__(FILTERING_FILE_INFO_TEXT(), get_filtered(Filters.FILE_OUT))
@@ -123,13 +124,13 @@ class FilteringOutput(Outputable):
             for i in filtered:
                 filtering_xml += "\t\t\t\t<entry>" + i + "</entry>\n"
 
-            self.out.writeln("\t\t<{0}>".format(container_tagname))
-            self.out.writeln(message_xml + "\t\t\t<entries>\n" + filtering_xml + "\t\t\t</entries>\n")
-            self.out.writeln("\t\t</{0}>".format(container_tagname))
+            self.out.write("\t\t<{0}>".format(container_tagname) + "\n")
+            self.out.write(message_xml + "\t\t\t<entries>\n" + filtering_xml + "\t\t\t</entries>\n")
+            self.out.write("\t\t</{0}>".format(container_tagname) + "\n")
 
     def output_xml(self):
         if has_filtered():
-            self.out.writeln("\t<filtering>")
+            self.out.write("\t<filtering>\n")
             self.__output_xml_section__(FILTERING_FILE_INFO_TEXT(),
                                         get_filtered(Filters.FILE_OUT), "files")
             self.__output_xml_section__(FILTERING_AUTHOR_INFO_TEXT(),
@@ -138,4 +139,4 @@ class FilteringOutput(Outputable):
                                         get_filtered(Filters.EMAIL), "emails")
             self.__output_xml_section__(FILTERING_COMMIT_INFO_TEXT(),
                                         get_filtered(Filters.REVISION), "revision")
-            self.out.writeln("\t</filtering>")
+            self.out.write("\t</filtering>\n")

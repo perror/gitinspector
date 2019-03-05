@@ -24,7 +24,7 @@ import unittest
 import zipfile
 
 import gitinspector.localization as localization
-from gitinspector.gitinspector import Runner, FileWriter, filtering, interval, __parse_arguments__
+from gitinspector.gitinspector import Runner, filtering, interval, __parse_arguments__
 
 
 # Test gitinspector over a git repository present in the resources/
@@ -96,8 +96,10 @@ class BasicRepositoryTest(unittest.TestCase):
         # Launch runner
         localization.init_null()
         file = tempfile.NamedTemporaryFile('w', delete=False)
-        r = Runner(opts, FileWriter(file))
-        r.process()
+        with open(file.name, 'w') as f:
+            r = Runner(opts, f)
+            r.process()
+
         with open(file.name, 'r') as f:
             contents = f.read()
             self.assertTrue("Statistical information" in contents)
@@ -117,8 +119,10 @@ class BasicRepositoryTest(unittest.TestCase):
         # Launch runner
         localization.init_null()
         file = tempfile.NamedTemporaryFile('w', delete=False)
-        r = Runner(opts, FileWriter(file))
-        r.process()
+        with open(file.name, 'w') as f:
+            r = Runner(opts, f)
+            r.process()
+
         with open(file.name, 'r') as f:
             contents = f.read()
             self.assertTrue("Statistical information" in contents)
@@ -137,8 +141,10 @@ class BasicRepositoryTest(unittest.TestCase):
         # Launch runner
         localization.init_null()
         file = tempfile.NamedTemporaryFile('w', delete=False)
-        r = Runner(opts, FileWriter(file))
-        r.process()
+        with open(file.name, 'w') as f:
+            r = Runner(opts, f)
+            r.process()
+
         with open(file.name, 'r') as f:
             contents = f.read()
             self.assertTrue("The following historical commit" in contents)
@@ -158,8 +164,10 @@ class BasicRepositoryTest(unittest.TestCase):
         # Launch runner
         localization.init_null()
         file = tempfile.NamedTemporaryFile('w', delete=False)
-        r = Runner(opts, FileWriter(file))
-        r.process()
+        with open(file.name, 'w') as f:
+            r = Runner(opts, f)
+            r.process()
+
         with open(file.name, 'r') as f:
             contents = f.read()
             self.assertTrue("The following historical commit" in contents)
@@ -239,8 +247,10 @@ class BasicFilteredRepositoryTest(unittest.TestCase):
         # Launch runner
         localization.init_null()
         file = tempfile.NamedTemporaryFile('w', delete=False)
-        r = Runner(opts, FileWriter(file))
-        r.process()
+        with open(file.name, 'w') as f:
+            r = Runner(opts, f)
+            r.process()
+
         with open(file.name, 'r') as f:
             contents = f.read()
             self.assertTrue("Statistical information" in contents)
@@ -263,8 +273,10 @@ class BasicFilteredRepositoryTest(unittest.TestCase):
         # Launch runner
         localization.init_null()
         file = tempfile.NamedTemporaryFile('w', delete=False)
-        r = Runner(opts, FileWriter(file))
-        r.process()
+        with open(file.name, 'w') as f:
+            r = Runner(opts, f)
+            r.process()
+
         with open(file.name, 'r') as f:
             contents = f.read()
             self.assertTrue("Statistical information" in contents)
@@ -285,8 +297,10 @@ class BasicFilteredRepositoryTest(unittest.TestCase):
         # Launch runner
         localization.init_null()
         file = tempfile.NamedTemporaryFile('w', delete=False)
-        r = Runner(opts, FileWriter(file))
-        r.process()
+        with open(file.name, 'w') as f:
+            r = Runner(opts, f)
+            r.process()
+
         with open(file.name, 'r') as f:
             contents = f.read()
             self.assertTrue("The following historical commit" in contents)
@@ -308,8 +322,10 @@ class BasicFilteredRepositoryTest(unittest.TestCase):
         # Launch runner
         localization.init_null()
         file = tempfile.NamedTemporaryFile('w', delete=False)
-        r = Runner(opts, FileWriter(file))
-        r.process()
+        with open(file.name, 'w') as f:
+            r = Runner(opts, f)
+            r.process()
+
         with open(file.name, 'r') as f:
             contents = f.read()
             self.assertTrue("The following historical commit" in contents)
