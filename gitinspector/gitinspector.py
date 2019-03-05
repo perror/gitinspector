@@ -18,7 +18,6 @@
 # along with gitinspector. If not, see <http://www.gnu.org/licenses/>.
 
 import argparse
-import ast
 import atexit
 import datetime
 import io
@@ -29,7 +28,7 @@ from .blame import Blame
 from .changes import Changes
 from .config import GitConfig
 from .git_utils import local_branches
-from .messages import error, warning, debug
+from .messages import error
 from .metrics import MetricsLogic
 from .repository import Repository
 from . import (basedir, filtering, format, interval,
@@ -43,19 +42,20 @@ localization.init()
 
 # The list of extensions that are analyzed when no filter is
 # specified for the files.
-DEFAULT_EXTENSIONS = ["*.java", "*.cs", "*.rb",
-                      "*.c",    "*.cc", "*.cpp", ".cxx",
-                      "*.h",    "*.hh", "*.hpp", ".hxx",
-                      "*.i",    "*.ii", "*.ipp", ".ixx",
-                      "*.rst",  "*.go",  "*.ml", "*.mli",
-                      "*.js",   "*.pl",  "*.pm", "*.py", "*.sh",
-                      "*.tex",  "*.bib",
-                      "*.md",   "*.txt",  "*.xml",
-                      "*.s",    "*.asm",
-                      "*.l",    "*.y",
-                      "*.glsl", "*.sql",
-                      "*akefile", "README", "INSTALL",
-                     ]
+DEFAULT_EXTENSIONS = \
+    ["*.java", "*.cs", "*.rb",
+     "*.c", "*.cc", "*.cpp", ".cxx",
+     "*.h", "*.hh", "*.hpp", ".hxx",
+     "*.i", "*.ii", "*.ipp", ".ixx",
+     "*.rst", "*.go", "*.ml", "*.mli",
+     "*.js", "*.pl", "*.pm", "*.py", "*.sh",
+     "*.tex", "*.bib",
+     "*.md", "*.txt", "*.xml",
+     "*.s", "*.asm",
+     "*.l", "*.y",
+     "*.glsl", "*.sql",
+     "*akefile", "README", "INSTALL",
+    ]
 
 
 class StdoutWriter(io.StringIO):
@@ -68,7 +68,7 @@ class StdoutWriter(io.StringIO):
         io.StringIO.close(self)
 
 
-class FileWriter(object):
+class FileWriter():
     def __init__(self, file):
         self.file = file
     def write(self, string):
@@ -79,7 +79,7 @@ class FileWriter(object):
         self.file.close()
 
 
-class Runner(object):
+class Runner():
     def __init__(self, config, writer):
         self.config = config  # Namespace object containing the config
         self.out = writer     # Buffer for containing the output
@@ -192,20 +192,25 @@ def __get_validated_git_repos__(config):
 
 
 def __parse_arguments__(args=None):
-    parser = argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter, allow_abbrev=False, description=
-                                     _("List information about the repository in REPOSITORY. If no repository is \n"
-                                       "specified, the current directory is used. If multiple repositories are \n"
-                                       "given, information will be merged into a unified statistical report."), epilog=
-                                     _("gitinspector will filter statistics to only include commits that modify, \n"
-                                       "add or remove one of the specified extensions, see -f or --file-types for \n"
-                                       "more information. \n\n"
-                                       "gitinspector requires that the git executable is available in your PATH. \n"
-                                       "Report gitinspector bugs to gitinspector@ejwa.se."))
+    parser = \
+        argparse.ArgumentParser(formatter_class=argparse.RawDescriptionHelpFormatter,
+                                allow_abbrev=False,
+                                description=
+                                _("List information about the repository in REPOSITORY. If no repository is \n"
+                                  "specified, the current directory is used. If multiple repositories are \n"
+                                  "given, information will be merged into a unified statistical report."),
+                                epilog=
+                                _("gitinspector will filter statistics to only include commits that modify, \n"
+                                  "add or remove one of the specified extensions, see -f or --file-types for \n"
+                                  "more information. \n\n"
+                                  "gitinspector requires that the git executable is available in your PATH. \n"
+                                  "Report gitinspector bugs to gitinspector@ejwa.se."))
     parser.add_argument('repositories', metavar='REPOSITORY', type=str, nargs='*',
                         help=_('the address of a repository to be analyzed'))
-    parser.add_argument('-a', '--aliases', metavar='ALIASES', help=
+    parser.add_argument('-a', '--aliases', metavar='ALIASES',
+                        help=
                         _("a dictionary string indicating aliases for the authors"),
-                        type=lambda s: ast.literal_eval(s), default={})
+                        default={})
     parser.add_argument('-b', '--branch', metavar='BRANCH', help=
                         _("the name of the branch for git to checkout, the default "
                           "being 'master'"), default="--all")
@@ -259,12 +264,12 @@ def __parse_arguments__(args=None):
                         _("an exclusion pattern of the form KEY:PAT, describing the file paths, "
                           "revisions, revisions with certain commit messages, author names or "
                           "author emails that should be excluded from the statistics; KEY must "
-                          "be in: ") + str([ f.name.lower() for f in Filters ]))
+                          "be in: ") + str([f.name.lower() for f in Filters]))
     parser.add_argument('-z', '--legacy', action='store_true', help=
                         _("display the legacy outputs for additional information (may be buggy)"))
 
     options, unknown = parser.parse_known_args() if args is None else parser.parse_known_args(args)
-    if (unknown):
+    if unknown:
         error("%s: Unknown option" % unknown[0])
 
     options.progress = True  # Display progress messages
@@ -280,8 +285,8 @@ def __parse_arguments__(args=None):
     if options.exclude:
         for pat in options.exclude:
             filtering.add_filters(pat)
-    for f in options.file_types.split(','):
-        filtering.__add_one_filter__(f)
+    for _f in options.file_types.split(','):
+        filtering.__add_one_filter__(_f)
 
     return options
 
@@ -301,7 +306,7 @@ def main():
         if options.output is None:
             writer = StdoutWriter()
         else:
-            writer = FileWriter(open(options.output,"w+"))
+            writer = FileWriter(open(options.output, "w+"))
 
         run = Runner(options, writer)
         run.process()
