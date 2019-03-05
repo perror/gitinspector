@@ -26,7 +26,7 @@ import re
 import subprocess
 import threading
 from .filtering import Filters, is_filtered, is_acceptable_file_name
-from . import format, git_utils, interval, terminal
+from . import formats, git_utils, interval, terminal
 
 CHANGES_PER_THREAD = 200
 NUM_THREADS = multiprocessing.cpu_count()

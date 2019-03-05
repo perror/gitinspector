@@ -21,16 +21,16 @@ import hashlib
 
 from urllib.parse import urlencode
 
-from . import format
+from . import formats
 
 def get_url(email, size=20):
     md5hash = hashlib.md5(email.encode("utf-8").lower().strip()).hexdigest()
     base_url = "https://www.gravatar.com/avatar/" + md5hash
     params = {}
 
-    if format.get_selected() == "html":
+    if formats.get_selected() == "html":
         params = {"default": "identicon", "size": size}
-    elif format.get_selected() == "xml" or format.get_selected() == "json":
+    elif formats.get_selected() == "xml" or formats.get_selected() == "json":
         params = {"default": "identicon"}
 
     return base_url + "?" + urlencode(params)

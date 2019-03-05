@@ -23,7 +23,7 @@ import string
 import sys
 import textwrap
 
-from .. import format, gravatar, terminal
+from .. import formats, gravatar, terminal
 from ..blame import Blame
 from .outputable import Outputable
 
@@ -34,7 +34,7 @@ class BlameOutput(Outputable):
     output_order = 200
 
     def __init__(self, runner):
-        if runner.config.progress and format.is_interactive_format():
+        if runner.config.progress and formats.is_interactive_format():
             print("")
 
         Outputable.__init__(self)
@@ -99,7 +99,7 @@ class BlameOutput(Outputable):
         self.out.write(",\n\t\t\"blame\": {\n" + message_json + "\t\t\t\"authors\": [\n\t\t\t" + blame_json + "]\n\t\t}")
 
     def output_text(self):
-        if self.progress and sys.stdout.isatty() and format.is_interactive_format():
+        if self.progress and sys.stdout.isatty() and formats.is_interactive_format():
             terminal.clear_row()
 
         self.out.writeln(textwrap.fill(BLAME_INFO_TEXT() + ":", width=terminal.get_size()[0]) + "\n")

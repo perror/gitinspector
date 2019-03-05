@@ -31,11 +31,11 @@ from .git_utils import local_branches
 from .messages import error
 from .metrics import MetricsLogic
 from .repository import Repository
-from . import (basedir, filtering, format, interval,
+from . import (basedir, filtering, formats, interval,
                localization, terminal, version)
 from .output import outputable
 
-from .format import __available_formats__
+from .formats import __available_formats__
 from .filtering import Filters
 
 localization.init()
@@ -89,7 +89,7 @@ class Runner():
         # We need the repos above to be set before we read the git config.
         GitConfig(self, self.repos[-1].location).read()
         # Initialize extensions and formats
-        format.select(config.format)
+        formats.select(config.format)
         # Initialize bounds on commits dates
         if config.since:
             interval.set_since(config.since.isoformat())
@@ -131,7 +131,7 @@ class Runner():
             if self.config.metrics:
                 self.metrics += MetricsLogic()
 
-            if self.config.progress and sys.stdout.isatty() and format.is_interactive_format():
+            if self.config.progress and sys.stdout.isatty() and formats.is_interactive_format():
                 terminal.clear_row()
 
         os.chdir(previous_directory)
@@ -144,10 +144,10 @@ class Runner():
         if self.config.silent:
             return
 
-        format.output_header(self)
+        formats.output_header(self)
         for out in outputable.Outputable.list():
             out(self).output()
-        format.output_footer(self)
+        formats.output_footer(self)
 
         self.out.close()
 
@@ -311,7 +311,7 @@ def main():
         run = Runner(options, writer)
         run.process()
 
-    except (filtering.InvalidRegExpError, format.InvalidFormatError) as exception:
+    except (filtering.InvalidRegExpError, formats.InvalidFormatError) as exception:
         error(exception.msg)
 
 

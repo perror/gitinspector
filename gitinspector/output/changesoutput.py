@@ -21,7 +21,7 @@ import json
 import os
 import string
 import textwrap
-from .. import format, gravatar, terminal
+from .. import formats, gravatar, terminal
 from .outputable import Outputable
 
 HISTORICAL_INFO_TEXT = lambda: _("The following historical commit information, by author, was found in the repository")

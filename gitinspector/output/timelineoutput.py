@@ -21,7 +21,7 @@ import os
 import string
 import textwrap
 
-from .. import format, gravatar, terminal, timeline
+from .. import formats, gravatar, terminal, timeline
 from .outputable import Outputable
 
 MODIFIED_ROWS_TEXT = lambda: _("Modified Rows:")

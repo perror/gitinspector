@@ -3,14 +3,14 @@ include-ids=yes
 comment=yes
 
 [MESSAGES CONTROL]
-disable=C0111,W0603,W0622
+disable=C0111,W0603
 
 
 [DESIGN]
 min-public-methods=0
 
 [FORMAT]
-max-line-length=130
+max-line-length=120
 indent-string='    '
 
 [VARIABLES]

@@ -21,7 +21,7 @@ import os
 import string
 import textwrap
 
-from .. import format, gravatar, terminal
+from .. import formats, gravatar, terminal
 from .. import responsibilities as resp
 from .outputable import Outputable
 

@@ -20,7 +20,7 @@
 import ast
 import os
 import subprocess
-from . import filtering, format, interval
+from . import filtering, formats, interval
 
 
 class GitConfig(object):

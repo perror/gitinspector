@@ -20,7 +20,7 @@
 import glob
 import importlib
 import os
-from .. import format
+from .. import formats
 
 
 class Outputable(object):
@@ -58,11 +58,11 @@ class Outputable(object):
 
     def output(self):
         if self.display:
-            if format.get_selected() == "html" or format.get_selected() == "htmlembedded":
+            if formats.get_selected() == "html" or formats.get_selected() == "htmlembedded":
                 self.output_html()
-            elif format.get_selected() == "json":
+            elif formats.get_selected() == "json":
                 self.output_json()
-            elif format.get_selected() == "text":
+            elif formats.get_selected() == "text":
                 self.output_text()
             else:
                 self.output_xml()

@@ -25,7 +25,7 @@ import threading
 
 from .changes import FileDiff
 from .filtering import Filters, is_filtered, is_acceptable_file_name
-from . import comment, format, git_utils, interval, terminal
+from . import comment, formats, git_utils, interval, terminal
 
 NUM_THREADS = multiprocessing.cpu_count()
 
@@ -206,7 +206,7 @@ class Blame(object):
                     thread.daemon = True
                     thread.start()
 
-                    if config.progress and format.is_interactive_format():
+                    if config.progress and formats.is_interactive_format():
                         terminal.output_progress(progress_text, cpt, len(lines))
 
             # Make sure all threads have completed.
