@@ -1,5 +1,6 @@
 # coding: utf-8
 #
+# Copyright © 2019 Emmanuel Fleury. All rights reserved.
 # Copyright © 2012-2015 Ejwa Software. All rights reserved.
 #
 # This file is part of gitinspector.
@@ -20,13 +21,14 @@
 from . import localization
 localization.init()
 
-__version__ = "0.5.1+thor"
+__version__ = "2.0"
 
-__doc__ = _("""Copyright © 2012-2015 Ejwa Software. All rights reserved.
+__doc__ = _("""Copyright © 2019 Emmanuel Fleury. All rights reserved.
+Copyright © 2012-2015 Ejwa Software. All rights reserved.
 License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>.
 This is free software: you are free to change and redistribute it.
 There is NO WARRANTY, to the extent permitted by law.
+""")
 
-Written by Adam Waldenberg.""")
 def output():
     print("gitinspector {0}\n".format(__version__) + __doc__)
